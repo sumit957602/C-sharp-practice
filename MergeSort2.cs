@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 class Program
 {
@@ -6,7 +6,7 @@ class Program
     {
         Console.WriteLine("Enter the elements of the array separated by spaces:");
         string input = Console.ReadLine()!;
-        
+
         int[] array = Array.ConvertAll(input.Split(' '), int.Parse);
 
         Console.WriteLine("Array before sorting:");
@@ -25,6 +25,7 @@ class Program
             int mid = (left + right) / 2;
 
             MergeSort(array, left, mid);
+
             MergeSort(array, mid + 1, right);
 
             Merge(array, left, mid, right);
@@ -33,47 +34,28 @@ class Program
 
     static void Merge(int[] array, int left, int mid, int right)
     {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
+        int i = left;     
+        int j = mid + 1;   
+        int k = 0;        
 
-        int[] leftArray = new int[n1];
-        int[] rightArray = new int[n2];
+        int[] temp = new int[right - left + 1]; 
 
-        for (int i = 0; i < n1; i++)
-            leftArray[i] = array[left + i];
-        for (int i = 0; i < n2; i++)
-            rightArray[i] = array[mid + 1 + i];
-
-        int iLeft = 0, iRight = 0, k = left;
-
-        while (iLeft < n1 && iRight < n2)
+        while (i <= mid && j <= right)
         {
-            if (leftArray[iLeft] <= rightArray[iRight])
-            {
-                array[k] = leftArray[iLeft];
-                iLeft++;
-            }
+            if (array[i] <= array[j])
+                temp[k++] = array[i++];
             else
-            {
-                array[k] = rightArray[iRight];
-                iRight++;
-            }
-            k++;
+                temp[k++] = array[j++];
         }
 
-        while (iLeft < n1)
-        {
-            array[k] = leftArray[iLeft];
-            iLeft++;
-            k++;
-        }
+        while (i <= mid)
+            temp[k++] = array[i++];
 
-        while (iRight < n2)
-        {
-            array[k] = rightArray[iRight];
-            iRight++;
-            k++;
-        }
+        while (j <= right)
+            temp[k++] = array[j++];
+
+        for (k = 0; k < temp.Length; k++)
+            array[left + k] = temp[k];
     }
 
     static void PrintArray(int[] array)
